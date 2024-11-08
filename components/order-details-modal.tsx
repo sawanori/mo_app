@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "@/lib/utils";
-import { OrderItem } from "@/lib/store/orders";
+import { OrderItem } from "@/types/orders";
 
 interface OrderDetailsModalProps {
   isOpen: boolean;

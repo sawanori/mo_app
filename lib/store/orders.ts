@@ -23,6 +23,7 @@ interface OrderStore {
   updateOrderStatus: (orderId: string, status: 'pending' | 'completed') => void;
   updatePaymentStatus: (orderId: string, status: 'unpaid' | 'paid') => void;
   clearOrdersByTable: (tableNumber: number) => void;
+  clearOrders: () => void;
 }
 
 export const useOrderStore = create<OrderStore>()(
@@ -75,9 +76,12 @@ export const useOrderStore = create<OrderStore>()(
           orders: state.orders.filter(order => order.tableNumber !== tableNumber),
           pendingPaymentOrders: state.pendingPaymentOrders.filter(order => order.tableNumber !== tableNumber),
         })),
+      clearOrders: () => set({ orders: [] }),
     }),
     {
       name: 'order-storage',
     }
   )
 );
+
+export type { OrderItem } from "@/types/orders";

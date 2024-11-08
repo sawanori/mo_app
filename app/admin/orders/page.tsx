@@ -26,23 +26,7 @@ import {
 import { useOrderStore } from "@/lib/store/orders";
 import { useCartStore } from "@/lib/store/cart";
 import { OrderDetailsModal } from "@/components/order-details-modal";
-
-interface OrderItem {
-  id: number;
-  name: string;
-  quantity: number;
-  price: number;
-  status: "pending" | "completed";
-}
-
-interface Order {
-  id: number;
-  tableNumber: number;
-  items: OrderItem[];
-  status: "pending" | "completed";
-  paymentStatus: "unpaid" | "paid";
-  timestamp: string;
-}
+import type { Order, OrderItem } from "@/types/orders";
 
 export default function OrdersPage() {
   const { toast } = useToast();
@@ -81,14 +65,9 @@ export default function OrdersPage() {
     setOrders(orders.map(order => {
       if (order.id === orderId) {
         const updatedItems = order.items.map(item =>
-          item.id === itemId ? { ...item, status: "completed" } : item
+          item.id === itemId ? { ...item, status: "completed" as const } : item
         );
-        const allCompleted = updatedItems.every(item => item.status === "completed");
-        return {
-          ...order,
-          items: updatedItems,
-          status: allCompleted ? "completed" : "pending",
-        };
+        return { ...order, items: updatedItems };
       }
       return order;
     }));
@@ -102,6 +81,7 @@ export default function OrdersPage() {
   const handlePaymentComplete = (orderId: number) => {
     const targetOrder = orders.find(o => o.id === orderId);
     if (!targetOrder) return;
+
 
     const allItemsCompleted = targetOrder.items.every(item => item.status === "completed");
     if (!allItemsCompleted) {
@@ -118,7 +98,10 @@ export default function OrdersPage() {
     clearCart();
 
     // 注文を完了済みリストに移動
-    const updatedOrder = { ...targetOrder, paymentStatus: "paid" };
+    const updatedOrder: Order = { 
+      ...targetOrder, 
+      paymentStatus: "paid" as const 
+    };
     setCompletedOrders([updatedOrder, ...completedOrders]);
     setOrders(orders.filter(order => order.id !== orderId));
 
@@ -135,9 +118,8 @@ export default function OrdersPage() {
     });
   };
 
-  const calculateTotal = (items: OrderItem[]) => {
-    return items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  };
+  const calculateTotal = (items: OrderItem[]) => 
+    items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
   return (
     <div className="container mx-auto px-4 py-8">
