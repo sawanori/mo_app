@@ -92,7 +92,7 @@ export function HeroSection() {
       >
         <CarouselContent>
           {/* YouTube動画スライド */}
-          {/* <CarouselItem className="min-w-0">
+          <CarouselItem className="min-w-0">
             <Card className="relative overflow-hidden">
               <div className="relative aspect-[16/12] sm:aspect-[21/9] md:aspect-[21/7]">
                 <iframe
@@ -116,7 +116,7 @@ export function HeroSection() {
                 </div>
               </div>
             </Card>
-          </CarouselItem> */}
+          </CarouselItem>
 
           {/* 商品スライド */}
           {items.map((item) => (
