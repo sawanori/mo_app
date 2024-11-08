@@ -10,7 +10,7 @@ export default function Navigation() {
       <div className="container mx-auto px-4">
         <div className="flex h-14 items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="font-bold">モバイルオーダー</span>
+            <span className="font-bold">ぽいに～</span>
           </Link>
           
           <div className="flex items-center space-x-1">

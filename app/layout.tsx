@@ -7,8 +7,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'モバイルオーダーシステム',
-  description: 'スマートな注文システム',
+  title: 'ぽいに～',
+  description: '腑抜けたな注文システム',
 };
 
 export default function RootLayout({
