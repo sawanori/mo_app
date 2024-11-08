@@ -92,7 +92,7 @@ export function HeroSection() {
       >
         <CarouselContent>
           {/* YouTube動画スライド */}
-          <CarouselItem>
+          <CarouselItem className="min-w-0">
             <Card className="relative overflow-hidden">
               <div className="relative aspect-[16/12] sm:aspect-[21/9] md:aspect-[21/7]">
                 <iframe
@@ -119,7 +119,7 @@ export function HeroSection() {
 
           {/* 商品スライド */}
           {items.map((item) => (
-            <CarouselItem key={item.id}>
+            <CarouselItem key={item.id} className="min-w-0">
               <Card className="relative overflow-hidden">
                 <div className="relative aspect-[16/12] sm:aspect-[21/9] md:aspect-[21/7]">
                   <Image
@@ -160,10 +160,8 @@ export function HeroSection() {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <div className="hidden md:block">
-          <CarouselPrevious className="left-4" />
-          <CarouselNext className="right-4" />
-        </div>
+        <CarouselPrevious className="left-2 sm:left-4" />
+        <CarouselNext className="right-2 sm:right-4" />
       </Carousel>
     </div>
   );
