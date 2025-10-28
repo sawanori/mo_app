@@ -8,7 +8,7 @@ import { AuthProvider } from "@/components/auth-provider";
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'ぽいに～',
+  title: 'ダイニーダサチェックくん',
   description: '腑抜けたな注文システム',
 };
 
