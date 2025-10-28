@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -29,10 +30,31 @@ import { OrderDetailsModal } from "@/components/order-details-modal";
 import type { Order, OrderItem } from "@/types/orders";
 
 export default function OrdersPage() {
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { toast } = useToast();
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const clearCart = useCartStore((state) => state.clearCart);
   const { clearOrdersByTable } = useOrderStore();
+
+  // 認証チェック
+  useEffect(() => {
+    const authStorage = localStorage.getItem("auth-storage");
+    if (authStorage) {
+      try {
+        const authData = JSON.parse(authStorage);
+        if (authData.state?.isAuthenticated === true) {
+          setIsAuthenticated(true);
+        } else {
+          router.push("/admin/login");
+        }
+      } catch (error) {
+        router.push("/admin/login");
+      }
+    } else {
+      router.push("/admin/login");
+    }
+  }, [router]);
   const [orders, setOrders] = useState<Order[]>([
     {
       id: 1,
@@ -118,8 +140,13 @@ export default function OrdersPage() {
     });
   };
 
-  const calculateTotal = (items: OrderItem[]) => 
+  const calculateTotal = (items: OrderItem[]) =>
     items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+  // 認証チェック中は何も表示しない
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">

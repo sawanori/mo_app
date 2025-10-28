@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -52,76 +53,77 @@ export function ProductModal({ item, isOpen, onClose }: ProductModalProps) {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[calc(100%-2rem)] max-w-lg mx-auto p-4 gap-4">
-        <DialogHeader className="space-y-2 text-left">
-          <DialogTitle className="text-xl font-bold leading-tight">{item.name}</DialogTitle>
-          <div className="flex items-center gap-2">
-            <Badge variant="secondary">{item.category}</Badge>
-            <span className="text-lg font-bold text-primary">
-              {formatPrice(item.price)}
-            </span>
-          </div>
-        </DialogHeader>
-
-        <div className="space-y-4">
-          <div className="relative aspect-video w-full rounded-lg overflow-hidden">
-            <Image
-              src={item.image}
-              alt={item.name}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 600px"
-            />
-          </div>
-          
-          <p className="text-sm text-muted-foreground">{item.description}</p>
-
-          <div className="flex items-center justify-between py-4 border-t border-b">
-            <div className="flex items-center gap-3">
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => handleQuantityChange(-1)}
-                disabled={quantity <= 1}
-                className="h-8 w-8"
-              >
-                <Minus className="h-4 w-4" />
-              </Button>
-              <span className="text-lg font-semibold w-8 text-center">
-                {quantity}
-              </span>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => handleQuantityChange(1)}
-                className="h-8 w-8"
-              >
-                <Plus className="h-4 w-4" />
-              </Button>
+    <AnimatePresence mode="wait">
+      {isOpen && (
+        <Dialog key={`modal-${item.id}`} open={isOpen} onOpenChange={onClose}>
+          <DialogContent key={isOpen ? 'open' : 'closed'} className="p-0 gap-0 overflow-hidden">
+            <div className="relative aspect-[3/4] w-full overflow-hidden">
+              {item.mediaType === 'video' ? (
+                <video
+                  src={item.image}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                />
+              ) : (
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 600px"
+                />
+              )}
             </div>
-            <div className="text-lg font-bold">
-              {formatPrice(item.price * quantity)}
-            </div>
-          </div>
-        </div>
 
-        <DialogFooter className="flex-col gap-2 sm:flex-row">
-          <Button
-            variant="outline"
-            onClick={onClose}
-            className="w-full"
-          >
-            キャンセル
-          </Button>
-          <Button
-            onClick={handleAddToCart}
-            className="w-full"
-          >
-            カートに追加
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+            <div className="p-4 space-y-4">
+              <DialogHeader className="space-y-2 text-left">
+                <DialogTitle className="text-xl font-bold leading-tight">{item.name}</DialogTitle>
+                <div className="flex items-center gap-2">
+                  <Badge variant="secondary">{item.category}</Badge>
+                </div>
+              </DialogHeader>
+
+              <p className="text-sm text-muted-foreground">{item.description}</p>
+
+              <DialogFooter className="flex-col gap-2">
+              <div className="flex items-center gap-2 w-full">
+                <div className="flex items-center gap-2 border rounded-md px-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleQuantityChange(-1)}
+                    disabled={quantity <= 1}
+                    className="h-8 w-8"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  <span className="text-base font-semibold w-6 text-center">
+                    {quantity}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleQuantityChange(1)}
+                    className="h-8 w-8"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+                <Button
+                  onClick={handleAddToCart}
+                  className="flex-1"
+                >
+                  カートに追加 {formatPrice(item.price * quantity)}
+                </Button>
+              </div>
+              </DialogFooter>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+    </AnimatePresence>
   );
 }

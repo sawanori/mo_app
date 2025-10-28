@@ -8,6 +8,10 @@ const config: Config = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    screens: {
+      'portrait': { raw: '(orientation: portrait)' },
+      'landscape': { raw: '(orientation: landscape)' },
+    },
     extend: {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
@@ -82,6 +86,13 @@ const config: Config = {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'in': 'in 2.4s ease-in-out',
+        'out': 'out 2.4s ease-in-out',
+      },
+      transitionDuration: {
+        '600': '600ms',
+        '1200': '1200ms',
+        '2400': '2400ms',
       },
     },
   },

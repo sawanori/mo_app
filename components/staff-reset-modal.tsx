@@ -22,7 +22,7 @@ interface StaffResetModalProps {
   onClose: () => void;
 }
 
-const STAFF_PASSWORD = "1234!"; // 実際の運用では環境変数などで管理することを推奨
+const STAFF_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "changeme"; // 実際の運用では環境変数などで管理することを推奨
 
 export function StaffResetModal({ isOpen, onClose }: StaffResetModalProps) {
   const [password, setPassword] = useState("");

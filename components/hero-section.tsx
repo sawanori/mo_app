@@ -18,22 +18,26 @@ import { useToast } from "@/components/ui/use-toast";
 import { useMenuStore } from "@/lib/store/menu";
 import { useFeaturedStore } from "@/lib/store/featured";
 import { LoadingSpinner } from "./loading-spinner";
+import { useThemeStore, COLOR_THEMES } from "@/lib/store/theme";
 
 const FEATURED_BADGES = {
-  monthly: "今月のおすすめ",
-  limited: "期間限定",
-  new: "新メニュー",
+  slide1: "おすすめ",
+  slide2: "人気",
+  slide3: "特選",
+  slide4: "デザート",
+  slide5: "NEW",
 } as const;
-
-// YouTubeの動画ID
-const YOUTUBE_VIDEO_ID = "knodCMLkYA0"; // この動画IDを実際のものに置き換えてください
 
 export function HeroSection() {
   const [isLoading, setIsLoading] = React.useState(true);
+  const [api, setApi] = React.useState<any>();
+  const [current, setCurrent] = React.useState(0);
   const addItem = useCartStore((state) => state.addItem);
   const { toast } = useToast();
   const menuItems = useMenuStore((state) => state.items);
   const featuredItems = useFeaturedStore((state) => state.featuredItems);
+  const currentTheme = useThemeStore((state) => state.currentTheme);
+  const colorScheme = COLOR_THEMES[currentTheme];
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
@@ -41,6 +45,18 @@ export function HeroSection() {
     }, 1000);
     return () => clearTimeout(timer);
   }, []);
+
+  React.useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setCurrent(api.selectedScrollSnap());
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
 
   const getFeaturedItems = () => {
     return Object.entries(featuredItems)
@@ -75,7 +91,7 @@ export function HeroSection() {
 
   if (isLoading) {
     return (
-      <div className="relative aspect-[16/12] sm:aspect-[21/9] md:aspect-[21/7] bg-muted flex items-center justify-center">
+      <div className="relative aspect-square bg-muted flex items-center justify-center rounded">
         <LoadingSpinner />
       </div>
     );
@@ -85,85 +101,73 @@ export function HeroSection() {
     <div className="relative">
       <Carousel
         opts={{
-          align: "start",
+          align: "center",
           loop: true,
         }}
         className="w-full"
+        setApi={setApi}
       >
-        <CarouselContent>
-          {/* YouTube動画スライド */}
-          <CarouselItem className="min-w-0">
-            <Card className="relative overflow-hidden">
-              <div className="relative aspect-[16/12] sm:aspect-[21/9] md:aspect-[21/7]">
-                <iframe
-                  className="absolute inset-0 w-full h-full"
-                  src={`https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${YOUTUBE_VIDEO_ID}&controls=0&showinfo=0&rel=0&disablekb=1&modestbranding=1&playsinline=1`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  style={{ pointerEvents: 'none' }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent pointer-events-none" />
-                <div className="absolute inset-0 flex flex-col justify-center p-4 sm:p-6 md:p-12 text-white pointer-events-none">
-                  <div className="inline-block px-3 py-1 mb-2 sm:mb-4 text-xs sm:text-sm font-semibold bg-primary rounded-full w-fit">
-                    スペシャルプロモーション
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-1 sm:mb-2 md:mb-4 leading-tight">
-                    美味しさの瞬間を、あなたに
-                  </h2>
-                  <p className="text-sm sm:text-base md:text-xl mb-3 sm:mb-4 max-w-xl line-clamp-2 sm:line-clamp-none text-gray-100">
-                    厳選された食材と職人の技が織りなす至福のひととき
-                  </p>
-                </div>
-              </div>
-            </Card>
-          </CarouselItem>
-
-          {/* 商品スライド */}
+        <CarouselContent className="-ml-2 md:-ml-4">
           {items.map((item) => (
-            <CarouselItem key={item.id} className="min-w-0">
-              <Card className="relative overflow-hidden">
-                <div className="relative aspect-[16/12] sm:aspect-[21/9] md:aspect-[21/7]">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    className="object-cover brightness-[0.65]"
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
-                  <div className="absolute inset-0 flex flex-col justify-center p-4 sm:p-6 md:p-12 text-white">
-                    <div className="inline-block px-3 py-1 mb-2 sm:mb-4 text-xs sm:text-sm font-semibold bg-primary rounded-full w-fit">
-                      {item.badge}
-                    </div>
-                    <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-1 sm:mb-2 md:mb-4 leading-tight">
+            <CarouselItem key={item.id} className="pl-2 md:pl-4 basis-[85%] md:basis-[80%]">
+              <Card className="relative overflow-hidden rounded-3xl">
+                <div className="relative aspect-square rounded-3xl">
+                  {item.mediaType === 'video' ? (
+                    <video
+                      src={item.image}
+                      className="absolute inset-0 w-full h-full object-cover rounded-3xl"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                    />
+                  ) : (
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      className="object-cover rounded-3xl"
+                      priority
+                    />
+                  )}
+                  <div className="absolute bottom-0 left-0 p-4 landscape:p-6 text-white">
+                    <h2 className="text-base landscape:text-lg font-bold mb-1 leading-tight drop-shadow-lg">
                       {item.name}
                     </h2>
-                    <p className="text-sm sm:text-base md:text-xl mb-3 sm:mb-4 max-w-xl line-clamp-2 sm:line-clamp-none text-gray-100">
-                      {item.description}
-                    </p>
-                    <div className="flex items-center gap-2 sm:gap-4">
-                      <span className="text-xl sm:text-2xl md:text-3xl font-bold">
-                        {formatPrice(item.price)}
-                      </span>
-                      <Button 
-                        size="sm" 
-                        className="gap-1.5 sm:gap-2" 
-                        variant="secondary"
-                        onClick={() => handleAddToCart(item)}
-                      >
-                        注文する
-                        <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />
-                      </Button>
-                    </div>
+                    <span className="text-sm landscape:text-base font-bold drop-shadow-lg">
+                      {formatPrice(item.price)}
+                    </span>
                   </div>
                 </div>
               </Card>
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-2 sm:left-4" />
-        <CarouselNext className="right-2 sm:right-4" />
+        <CarouselPrevious
+          className="left-1 landscape:left-4"
+          style={{ color: colorScheme.heroCarouselArrow }}
+        />
+        <CarouselNext
+          className="right-1 landscape:right-4"
+          style={{ color: colorScheme.heroCarouselArrow }}
+        />
       </Carousel>
+
+      {/* Dot Indicators */}
+      <div className="flex justify-center gap-2 mt-3">
+        {items.map((_, index) => (
+          <button
+            key={index}
+            className={`h-2 w-2 rounded-full transition-all ${
+              index === current
+                ? "bg-orange-500"
+                : "bg-muted-foreground/30"
+            }`}
+            onClick={() => api?.scrollTo(index)}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
     </div>
   );
 }

@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model MainCategory {
+  id             Int             @id @default(autoincrement())
+  name           String          @unique
+  sortOrder      Int             @default(0)
+  subCategories  SubCategory[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model SubCategory {
+  id               Int           @id @default(autoincrement())
+  name             String
+  displayType      String        @default("text") // "text" or "image"
+  backgroundImage  String?
+  sortOrder        Int           @default(0)
+  mainCategoryId   Int
+  mainCategory     MainCategory  @relation(fields: [mainCategoryId], references: [id], onDelete: Cascade)
+  menuItems        MenuItem[]
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@unique([mainCategoryId, name])
+}
+
+model MenuItem {
+  id            Int          @id @default(autoincrement())
+  name          String
+  price         Int
+  description   String
+  image         String
+  category      String       // メインカテゴリー名
+  subCategory   String       // サブカテゴリー名
+  cardSize      String?      // "normal" or "large"
+  mediaType     String?      // "image" or "video"
+  sortOrder     Int          @default(0)
+  subCategoryId Int?
+  subCategoryRel SubCategory? @relation(fields: [subCategoryId], references: [id], onDelete: SetNull)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model FeaturedItem {
+  id        Int      @id @default(autoincrement())
+  type      String   @unique // "slide1", "slide2", "slide3", "slide4", "slide5"
+  itemId    String?  // MenuItem ID
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ColorTheme {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  value     String   // JSON string of theme colors
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

@@ -14,8 +14,11 @@ export const useAuthStore = create<AuthStore>()(
     (set) => ({
       isAuthenticated: false,
       login: (email: string, password: string) => {
-        // モックの認証
-        if (email === 'snp.inc.info@gmail.com' && password === '1234!') {
+        // モックの認証 - 本番環境では適切な認証システムを実装してください
+        const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL || 'admin@example.com';
+        const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'changeme';
+
+        if (email === adminEmail && password === adminPassword) {
           set({ isAuthenticated: true });
           return true;
         }

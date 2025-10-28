@@ -80,3 +80,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Override tailwindcss-animate durations for dialog */
+[data-state="open"].animate-in,
+[data-state="closed"].animate-out {
+  animation-duration: 2.4s !important;
+  animation-timing-function: ease-in-out !important;
+}
