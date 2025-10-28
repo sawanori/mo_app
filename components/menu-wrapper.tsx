@@ -67,7 +67,7 @@ export function MenuWrapper({ selectedMainCategory }: MenuWrapperProps) {
           <div
             ref={subCategoryContainerRef}
             className={`overflow-y-auto transition-all duration-300 ${
-              isSticky ? 'sticky top-[72px] max-h-[calc(100vh-72px)]' : ''
+              isSticky ? 'sticky top-0 max-h-screen' : ''
             }`}
           >
             <SubCategoryNav
