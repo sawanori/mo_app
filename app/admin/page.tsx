@@ -28,6 +28,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Plus, Save, Trash2, Star, Clock, Sparkles, Edit } from "lucide-react";
+import { useAuthStore } from "@/lib/store/auth";
 import { useCategoryStore } from "@/lib/store/categories";
 import { useMenuStore } from "@/lib/store/menu";
 import { useFeaturedStore, FeaturedType } from "@/lib/store/featured";
@@ -69,21 +70,38 @@ export default function AdminPage() {
 
   // 認証チェック
   useEffect(() => {
-    const authStorage = localStorage.getItem("auth-storage");
-    if (authStorage) {
-      try {
-        const authData = JSON.parse(authStorage);
-        if (authData.state?.isAuthenticated === true) {
-          setIsAuthenticated(true);
-        } else {
-          router.push("/admin/login");
-        }
-      } catch (error) {
+    const checkAuth = async () => {
+      console.log('[AdminPage] Starting auth check');
+      // First check if user is logged in with Supabase
+      const { user, isAdmin, initialize } = useAuthStore.getState();
+      console.log('[AdminPage] Initial state:', { user: user?.email, isAdmin });
+
+      // Initialize auth state if not already done
+      if (!user) {
+        console.log('[AdminPage] No user, initializing...');
+        await initialize();
+      }
+
+      const currentState = useAuthStore.getState();
+      console.log('[AdminPage] Current state after init:', {
+        isAuthenticated: currentState.isAuthenticated,
+        isAdmin: currentState.isAdmin,
+        user: currentState.user?.email
+      });
+
+      if (currentState.isAuthenticated && currentState.isAdmin) {
+        console.log('[AdminPage] User is authenticated admin, showing page');
+        setIsAuthenticated(true);
+      } else if (currentState.isAuthenticated && !currentState.isAdmin) {
+        console.log('[AdminPage] User is authenticated but not admin, redirecting to home');
+        router.push("/");
+      } else {
+        console.log('[AdminPage] User is not authenticated, redirecting to login');
         router.push("/admin/login");
       }
-    } else {
-      router.push("/admin/login");
-    }
+    };
+
+    checkAuth();
   }, [router]);
 
   // データ取得

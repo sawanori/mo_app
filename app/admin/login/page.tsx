@@ -21,15 +21,32 @@ export default function AdminLoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    console.log('[Login] Starting login process');
     const success = await login(email, password);
+    console.log('[Login] Login result:', success);
 
     if (success) {
+      const authState = useAuthStore.getState();
+      console.log('[Login] Auth state after login:', {
+        isAuthenticated: authState.isAuthenticated,
+        isAdmin: authState.isAdmin,
+        user: authState.user?.email
+      });
+
       toast({
         title: "ログイン成功",
         description: "管理画面にリダイレクトします",
       });
+
+      // Wait a bit for Supabase session to be fully established
+      console.log('[Login] Waiting for session to establish...');
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Increased to 1 second
+
+      console.log('[Login] Redirecting to /admin');
       router.push("/admin");
+      router.refresh(); // Force a refresh to update middleware
     } else {
+      console.error('[Login] Login failed');
       toast({
         title: "ログイン失敗",
         description: "メールアドレスまたはパスワードが間違っています",
