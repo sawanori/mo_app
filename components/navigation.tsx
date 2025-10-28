@@ -2,7 +2,7 @@
 
 import { History, Receipt, Bell, Languages, Search } from "lucide-react";
 // imports removed: Link, Button (moved into NavButton)
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useThemeStore, COLOR_THEMES } from "@/lib/store/theme";
 import { NavButton } from "./nav-button";
 
@@ -10,21 +10,20 @@ export default function Navigation() {
   const [isVisible, setIsVisible] = useState(true);
   const currentTheme = useThemeStore((state) => state.currentTheme);
   const colorScheme = COLOR_THEMES[currentTheme];
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout | null = null;
-
     const handleScroll = () => {
       // スクロール中は非表示
       setIsVisible(false);
 
       // タイムアウトをクリア
-      if (timeoutId) {
-        clearTimeout(timeoutId);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
       }
 
       // スクロールが止まったら500ms後に表示
-      timeoutId = setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         setIsVisible(true);
       }, 500);
     };
@@ -33,8 +32,8 @@ export default function Navigation() {
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      if (timeoutId) {
-        clearTimeout(timeoutId);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
       }
     };
   }, []);
