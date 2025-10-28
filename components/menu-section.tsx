@@ -4,13 +4,10 @@ import React, { useState, useEffect } from "react";
 import { useOrderStore } from "@/lib/store/orders";
 import { useMenuStore } from "@/lib/store/menu";
 import { useCategoryStore } from "@/lib/store/categories";
-import { formatPrice } from "@/lib/utils";
-import Image from "next/image";
-import { Card } from "./ui/card";
-import { Badge } from "./ui/badge";
 import { ProductModal } from "./product-modal";
 import { MenuItem } from "@/lib/store/menu";
-import { LoadingSpinner } from "./loading-spinner";
+import { SubcategoryHeader } from "./subcategory-header";
+import { MenuGrid } from "./menu-grid";
 
 interface MenuSectionProps {
   selectedMainCategory: string;
@@ -72,115 +69,24 @@ export function MenuSection({ selectedMainCategory, selectedSubCategory, subCate
         return (
           <div key={`${mainCategory}-${subCategory.id}`} className="mb-8">
             {/* Sub-category Title Banner */}
-            {subCategory.displayType === "image" && subCategory.backgroundImage ? (
-              // Background image style
-              <div
-                ref={(el) => {
-                  if (subCategoryTitleRefs && el) {
-                    subCategoryTitleRefs.current[subCategory.name] = el;
-                  }
-                }}
-                className="mb-4 relative overflow-hidden h-16 rounded-lg"
-              >
-                <Image
-                  src={subCategory.backgroundImage}
-                  alt={subCategory.name}
-                  fill
-                  className="object-cover"
-                  sizes="100vw"
-                  unoptimized
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30" />
-                <div className="absolute inset-0 flex items-center gap-3 px-4">
-                  <h2 className="text-2xl font-bold text-white drop-shadow-lg">
-                    {subCategory.name}
-                  </h2>
-                  <Badge variant="secondary" className="text-xs">
-                    {items.length}品
-                  </Badge>
-                </div>
-              </div>
-            ) : (
-              // Text only style
-              <div
-                ref={(el) => {
-                  if (subCategoryTitleRefs && el) {
-                    subCategoryTitleRefs.current[subCategory.name] = el;
-                  }
-                }}
-                className="mb-4 bg-gradient-to-r from-primary/10 to-primary/5 border-l-4 border-primary rounded-r-lg p-4"
-              >
-                <div className="flex items-center gap-3">
-                  <h2 className="text-xl font-bold text-foreground">
-                    {subCategory.name}
-                  </h2>
-                  <Badge variant="secondary" className="text-xs">
-                    {items.length}品のメニュー
-                  </Badge>
-                </div>
-              </div>
-            )}
+            <SubcategoryHeader
+              name={subCategory.name}
+              itemCount={items.length}
+              displayType={subCategory.displayType}
+              backgroundImage={subCategory.backgroundImage}
+              registerRef={(el) => {
+                if (subCategoryTitleRefs && el) {
+                  subCategoryTitleRefs.current[subCategory.name] = el;
+                }
+              }}
+            />
 
             {/* Items Grid */}
-            <div className="grid grid-cols-2 gap-3">
-              {items.map((item, index) => {
-                const isFirstItem = index === 0;
-
-                return (
-                  <Card
-                    key={item.id}
-                    className={`overflow-hidden cursor-pointer transition-transform hover:scale-[1.02] ${
-                      isFirstItem ? 'col-span-2' : ''
-                    }`}
-                    onClick={() => setSelectedItem(item)}
-                  >
-                    <div className="flex flex-col">
-                      <div className="relative w-full aspect-square">
-                        {item.mediaType === 'video' ? (
-                          <video
-                            src={item.image}
-                            className="absolute inset-0 w-full h-full object-cover"
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                          />
-                        ) : (
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            fill
-                            className="object-cover"
-                            sizes={isFirstItem ? "100vw" : "(max-width: 768px) 50vw, 33vw"}
-                          />
-                        )}
-                      </div>
-                      <div className={`${isFirstItem ? 'p-3' : 'p-2'} space-y-1`}>
-                        <h3 className={`font-semibold ${isFirstItem ? 'text-sm' : 'text-xs'} line-clamp-2`}>
-                          {item.name}
-                        </h3>
-                        <p className={`${isFirstItem ? 'text-xs' : 'text-[10px]'} text-muted-foreground line-clamp-2`}>
-                          {item.description}
-                        </p>
-                        <div className="flex gap-1 flex-wrap">
-                          <Badge variant="secondary" className={`${isFirstItem ? 'text-[10px]' : 'text-[9px]'} px-1 py-0`}>
-                            {item.category}
-                          </Badge>
-                          {isOrdered(item.id) && (
-                            <Badge variant="default" className={`${isFirstItem ? 'text-[10px]' : 'text-[9px]'} px-1 py-0`}>
-                              注文済み
-                            </Badge>
-                          )}
-                        </div>
-                        <span className={`${isFirstItem ? 'text-base' : 'text-sm'} font-bold text-primary block`}>
-                          {formatPrice(item.price)}
-                        </span>
-                      </div>
-                    </div>
-                  </Card>
-                );
-              })}
-            </div>
+            <MenuGrid
+              items={items}
+              isOrdered={isOrdered}
+              onSelect={(item) => setSelectedItem(item)}
+            />
           </div>
         );
       })}

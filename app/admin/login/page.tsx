@@ -14,13 +14,16 @@ export default function AdminLoginPage() {
   const router = useRouter();
   const { toast } = useToast();
   const login = useAuthStore((state) => state.login);
+  const loading = useAuthStore((state) => state.loading);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (login(email, password)) {
+
+    const success = await login(email, password);
+
+    if (success) {
       toast({
         title: "ログイン成功",
         description: "管理画面にリダイレクトします",
@@ -70,8 +73,8 @@ export default function AdminLoginPage() {
             />
           </div>
 
-          <Button type="submit" className="w-full">
-            ログイン
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? "ログイン中..." : "ログイン"}
           </Button>
         </form>
       </Card>

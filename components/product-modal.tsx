@@ -56,7 +56,12 @@ export function ProductModal({ item, isOpen, onClose }: ProductModalProps) {
     <AnimatePresence mode="wait">
       {isOpen && (
         <Dialog key={`modal-${item.id}`} open={isOpen} onOpenChange={onClose}>
-          <DialogContent key={isOpen ? 'open' : 'closed'} className="p-0 gap-0 overflow-hidden">
+          <DialogContent
+            key={isOpen ? 'open' : 'closed'}
+            className="p-0 gap-0 overflow-hidden"
+            data-testid="product-modal"
+            data-item-id={item.id}
+          >
             <div className="relative aspect-[3/4] w-full overflow-hidden">
               {item.mediaType === 'video' ? (
                 <video
@@ -97,6 +102,7 @@ export function ProductModal({ item, isOpen, onClose }: ProductModalProps) {
                     onClick={() => handleQuantityChange(-1)}
                     disabled={quantity <= 1}
                     className="h-8 w-8"
+                    data-testid="qty-decrease"
                   >
                     <Minus className="h-4 w-4" />
                   </Button>
@@ -108,6 +114,7 @@ export function ProductModal({ item, isOpen, onClose }: ProductModalProps) {
                     size="icon"
                     onClick={() => handleQuantityChange(1)}
                     className="h-8 w-8"
+                    data-testid="qty-increase"
                   >
                     <Plus className="h-4 w-4" />
                   </Button>
@@ -115,6 +122,7 @@ export function ProductModal({ item, isOpen, onClose }: ProductModalProps) {
                 <Button
                   onClick={handleAddToCart}
                   className="flex-1"
+                  data-testid="add-to-cart"
                 >
                   カートに追加 {formatPrice(item.price * quantity)}
                 </Button>

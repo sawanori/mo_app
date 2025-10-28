@@ -47,7 +47,7 @@ function SortableItem({ mainCategory, onEdit, onDelete }: SortableItemProps) {
   };
 
   return (
-    <div ref={setNodeRef} style={style}>
+    <div ref={setNodeRef} style={style} data-testid={`maincat-sort-item-${mainCategory.id}`}>
       <Card className="p-4">
         <div className="flex items-center gap-4">
           {/* Drag Handle */}
@@ -55,6 +55,7 @@ function SortableItem({ mainCategory, onEdit, onDelete }: SortableItemProps) {
             className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground transition-colors"
             {...attributes}
             {...listeners}
+            data-testid={`maincat-sort-drag-${mainCategory.id}`}
           >
             <GripVertical className="h-5 w-5" />
           </button>
@@ -82,6 +83,7 @@ function SortableItem({ mainCategory, onEdit, onDelete }: SortableItemProps) {
               size="sm"
               variant="outline"
               onClick={() => onEdit(mainCategory)}
+              data-testid={`maincat-sort-edit-${mainCategory.id}`}
             >
               <Edit className="h-4 w-4" />
             </Button>
@@ -89,6 +91,7 @@ function SortableItem({ mainCategory, onEdit, onDelete }: SortableItemProps) {
               size="sm"
               variant="destructive"
               onClick={() => onDelete(mainCategory.id)}
+              data-testid={`maincat-sort-delete-${mainCategory.id}`}
             >
               <Trash2 className="h-4 w-4" />
             </Button>
@@ -160,7 +163,7 @@ export function MainCategoriesSortable({
         items={localMainCategories.map((cat) => cat.id)}
         strategy={verticalListSortingStrategy}
       >
-        <div className="space-y-3">
+        <div className="space-y-3" data-testid="maincat-sort-list">
           {localMainCategories.map((mainCategory) => (
             <SortableItem
               key={mainCategory.id}

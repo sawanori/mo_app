@@ -54,7 +54,7 @@ function SortableItem({ subCategory, mainCategoryName, onEdit, onDelete }: Sorta
   };
 
   return (
-    <div ref={setNodeRef} style={style}>
+    <div ref={setNodeRef} style={style} data-testid={`subcat-sort-item-${subCategory.id}`}>
       <Card className="p-4">
         <div className="flex items-center gap-4">
           {/* Drag Handle */}
@@ -62,6 +62,7 @@ function SortableItem({ subCategory, mainCategoryName, onEdit, onDelete }: Sorta
             className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground transition-colors"
             {...attributes}
             {...listeners}
+            data-testid={`subcat-sort-drag-${subCategory.id}`}
           >
             <GripVertical className="h-5 w-5" />
           </button>
@@ -90,6 +91,7 @@ function SortableItem({ subCategory, mainCategoryName, onEdit, onDelete }: Sorta
               size="sm"
               variant="outline"
               onClick={() => onEdit(subCategory)}
+              data-testid={`subcat-sort-edit-${subCategory.id}`}
             >
               <Edit className="h-4 w-4" />
             </Button>
@@ -97,6 +99,7 @@ function SortableItem({ subCategory, mainCategoryName, onEdit, onDelete }: Sorta
               size="sm"
               variant="destructive"
               onClick={() => onDelete(subCategory.id)}
+              data-testid={`subcat-sort-delete-${subCategory.id}`}
             >
               <Trash2 className="h-4 w-4" />
             </Button>
@@ -175,7 +178,7 @@ export function SubCategoriesSortable({
         items={localSubCategories.map((sub) => sub.id)}
         strategy={verticalListSortingStrategy}
       >
-        <div className="space-y-3">
+        <div className="space-y-3" data-testid="subcat-sort-list">
           {localSubCategories.map((subCategory) => (
             <SortableItem
               key={subCategory.id}

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { SubCategory } from "@/lib/store/categories";
-import { useRef } from "react";
+import { memo } from "react";
 import { useThemeStore, COLOR_THEMES } from "@/lib/store/theme";
 
 interface SubCategoryNavProps {
@@ -12,7 +12,7 @@ interface SubCategoryNavProps {
   subCategoryRefs?: React.MutableRefObject<{ [key: string]: HTMLButtonElement | null }>;
 }
 
-export function SubCategoryNav({
+export const SubCategoryNav = memo(function SubCategoryNav({
   subCategories,
   selectedSubCategory,
   onSelectSubCategory,
@@ -37,10 +37,11 @@ export function SubCategoryNav({
             backgroundColor: selectedSubCategory === subCategory.name ? colorScheme.subCategoryButtonBg : 'transparent',
           }}
           onClick={() => onSelectSubCategory(subCategory.name)}
+          data-testid={`subcat-btn-${subCategory.id}`}
         >
           {subCategory.name}
         </Button>
       ))}
     </div>
   );
-}
+});

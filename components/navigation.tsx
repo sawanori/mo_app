@@ -1,10 +1,10 @@
 "use client";
 
 import { History, Receipt, Bell, Languages, Search } from "lucide-react";
-import Link from "next/link";
-import { Button } from "./ui/button";
+// imports removed: Link, Button (moved into NavButton)
 import { useState, useEffect } from "react";
 import { useThemeStore, COLOR_THEMES } from "@/lib/store/theme";
+import { NavButton } from "./nav-button";
 
 export default function Navigation() {
   const [isVisible, setIsVisible] = useState(true);
@@ -51,30 +51,43 @@ export default function Navigation() {
       >
         <div className="flex flex-col items-center py-2 border-b">
           <div className="flex items-center space-x-2">
-            <Link href="/order-history">
-              <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1.5 h-auto py-3 px-4">
-                <History className="h-7 w-7" style={{ color: colorScheme.headerIcon }} />
-                <span className="text-sm font-medium" style={{ color: colorScheme.navigationText }}>履歴</span>
-              </Button>
-            </Link>
-            <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1.5 h-auto py-3 px-4">
-              <Bell className="h-7 w-7" style={{ color: colorScheme.headerIcon }} />
-              <span className="text-sm font-medium" style={{ color: colorScheme.navigationText }}>呼出</span>
-            </Button>
-            <Link href="/payment">
-              <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1.5 h-auto py-3 px-4">
-                <Receipt className="h-7 w-7" style={{ color: colorScheme.headerIcon }} />
-                <span className="text-sm font-medium" style={{ color: colorScheme.navigationText }}>会計</span>
-              </Button>
-            </Link>
-            <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1.5 h-auto py-3 px-4">
-              <Languages className="h-7 w-7" style={{ color: colorScheme.headerIcon }} />
-              <span className="text-sm font-medium" style={{ color: colorScheme.navigationText }}>Lang</span>
-            </Button>
-            <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1.5 h-auto py-3 px-4">
-              <Search className="h-7 w-7" style={{ color: colorScheme.headerIcon }} />
-              <span className="text-sm font-medium" style={{ color: colorScheme.navigationText }}>検索</span>
-            </Button>
+            <NavButton
+              icon={History}
+              label="履歴"
+              href="/order-history"
+              color={colorScheme.headerIcon}
+              textColor={colorScheme.navigationText}
+              testId="nav-history"
+            />
+            <NavButton
+              icon={Bell}
+              label="呼出"
+              color={colorScheme.headerIcon}
+              textColor={colorScheme.navigationText}
+              testId="nav-call"
+            />
+            <NavButton
+              icon={Receipt}
+              label="会計"
+              href="/payment"
+              color={colorScheme.headerIcon}
+              textColor={colorScheme.navigationText}
+              testId="nav-payment"
+            />
+            <NavButton
+              icon={Languages}
+              label="Lang"
+              color={colorScheme.headerIcon}
+              textColor={colorScheme.navigationText}
+              testId="nav-language"
+            />
+            <NavButton
+              icon={Search}
+              label="検索"
+              color={colorScheme.headerIcon}
+              textColor={colorScheme.navigationText}
+              testId="nav-search"
+            />
           </div>
         </div>
       </div>

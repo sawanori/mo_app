@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { Button } from "@/components/ui/button";
 import { useThemeStore, COLOR_THEMES } from "@/lib/store/theme";
 
@@ -9,7 +10,7 @@ interface CategoryNavProps {
   onSelectCategory: (category: string) => void;
 }
 
-export function CategoryNav({ categories, selectedCategory, onSelectCategory }: CategoryNavProps) {
+export const CategoryNav = memo(function CategoryNav({ categories, selectedCategory, onSelectCategory }: CategoryNavProps) {
   const currentTheme = useThemeStore((state) => state.currentTheme);
   const colorScheme = COLOR_THEMES[currentTheme];
 
@@ -23,6 +24,7 @@ export function CategoryNav({ categories, selectedCategory, onSelectCategory }: 
             backgroundColor: selectedCategory === "すべて" ? colorScheme.mainCategoryButtonBg : undefined,
           }}
           onClick={() => onSelectCategory("すべて")}
+          data-testid="maincat-all"
         >
           すべて
         </Button>
@@ -35,6 +37,7 @@ export function CategoryNav({ categories, selectedCategory, onSelectCategory }: 
               backgroundColor: selectedCategory === category ? colorScheme.mainCategoryButtonBg : undefined,
             }}
             onClick={() => onSelectCategory(category)}
+            data-testid={`maincat-${category}`}
           >
             {category}
           </Button>
@@ -42,4 +45,4 @@ export function CategoryNav({ categories, selectedCategory, onSelectCategory }: 
       </div>
     </div>
   );
-}
+});

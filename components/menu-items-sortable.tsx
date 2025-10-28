@@ -48,7 +48,7 @@ function SortableItem({ item, onEdit, onDelete }: SortableItemProps) {
   };
 
   return (
-    <div ref={setNodeRef} style={style}>
+    <div ref={setNodeRef} style={style} data-testid={`menu-sort-item-${item.id}`}>
       <Card className="p-4">
         <div className="flex items-center gap-4">
           {/* Drag Handle */}
@@ -56,6 +56,7 @@ function SortableItem({ item, onEdit, onDelete }: SortableItemProps) {
             className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground transition-colors"
             {...attributes}
             {...listeners}
+            data-testid={`menu-sort-drag-${item.id}`}
           >
             <GripVertical className="h-5 w-5" />
           </button>
@@ -106,6 +107,7 @@ function SortableItem({ item, onEdit, onDelete }: SortableItemProps) {
               size="sm"
               variant="outline"
               onClick={() => onEdit(item)}
+              data-testid={`menu-sort-edit-${item.id}`}
             >
               <Edit className="h-4 w-4" />
             </Button>
@@ -113,6 +115,7 @@ function SortableItem({ item, onEdit, onDelete }: SortableItemProps) {
               size="sm"
               variant="destructive"
               onClick={() => onDelete(item.id)}
+              data-testid={`menu-sort-delete-${item.id}`}
             >
               <Trash2 className="h-4 w-4" />
             </Button>
@@ -190,7 +193,7 @@ export function MenuItemsSortable({
         items={localItems.map((item) => item.id)}
         strategy={verticalListSortingStrategy}
       >
-        <div className="space-y-3">
+        <div className="space-y-3" data-testid="menu-sort-list">
           {localItems.map((item) => (
             <SortableItem
               key={item.id}

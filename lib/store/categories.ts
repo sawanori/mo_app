@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { createClient } from '@/lib/supabase/client';
 
 export interface SubCategory {
   id: number;
@@ -39,9 +40,41 @@ export const useCategoryStore = create<CategoryStore>()((set, get) => ({
   fetchCategories: async () => {
     set({ loading: true, error: null });
     try {
-      const response = await fetch('/api/categories');
-      if (!response.ok) throw new Error('Failed to fetch categories');
-      const categories = await response.json();
+      const supabase = createClient();
+
+      // Fetch main categories
+      const { data: mainCategoriesData, error: mainError } = await supabase
+        .from('main_categories')
+        .select('*')
+        .order('sort_order', { ascending: true });
+
+      if (mainError) throw mainError;
+
+      // Fetch sub categories
+      const { data: subCategoriesData, error: subError } = await supabase
+        .from('sub_categories')
+        .select('*')
+        .order('sort_order', { ascending: true });
+
+      if (subError) throw subError;
+
+      // Convert snake_case to camelCase and structure the data
+      const categories: MainCategory[] = (mainCategoriesData || []).map(mainCat => ({
+        id: mainCat.id,
+        name: mainCat.name,
+        sortOrder: mainCat.sort_order || 0,
+        subCategories: (subCategoriesData || [])
+          .filter(sub => sub.main_category_id === mainCat.id)
+          .map(sub => ({
+            id: sub.id,
+            name: sub.name,
+            displayType: sub.display_type as "text" | "image" | undefined,
+            backgroundImage: sub.background_image,
+            sortOrder: sub.sort_order || 0,
+            mainCategoryId: sub.main_category_id,
+          })),
+      }));
+
       set({ mainCategories: categories, loading: false });
     } catch (error) {
       set({ error: (error as Error).message, loading: false });
@@ -56,17 +89,16 @@ export const useCategoryStore = create<CategoryStore>()((set, get) => ({
         ? Math.max(...state.mainCategories.map(c => c.sortOrder))
         : -1;
 
-      const response = await fetch('/api/categories', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'main',
+      const supabase = createClient();
+      const { error } = await supabase
+        .from('main_categories')
+        .insert({
           name,
-          sortOrder: maxSortOrder + 1,
-        }),
-      });
+          sort_order: maxSortOrder + 1,
+        });
 
-      if (!response.ok) throw new Error('Failed to add main category');
+      if (error) throw error;
+
       await get().fetchCategories(); // Refresh categories
       set({ loading: false });
     } catch (error) {
@@ -83,20 +115,19 @@ export const useCategoryStore = create<CategoryStore>()((set, get) => ({
         ? Math.max(...mainCategory.subCategories.map(s => s.sortOrder))
         : -1;
 
-      const response = await fetch('/api/categories', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'sub',
+      const supabase = createClient();
+      const { error } = await supabase
+        .from('sub_categories')
+        .insert({
           name: subCategoryName,
-          displayType,
-          backgroundImage,
-          mainCategoryId,
-          sortOrder: maxSortOrder + 1,
-        }),
-      });
+          display_type: displayType,
+          background_image: backgroundImage,
+          main_category_id: mainCategoryId,
+          sort_order: maxSortOrder + 1,
+        });
 
-      if (!response.ok) throw new Error('Failed to add subcategory');
+      if (error) throw error;
+
       await get().fetchCategories(); // Refresh categories
       set({ loading: false });
     } catch (error) {
@@ -107,17 +138,14 @@ export const useCategoryStore = create<CategoryStore>()((set, get) => ({
   updateMainCategory: async (id, name) => {
     set({ loading: true, error: null });
     try {
-      const response = await fetch('/api/categories', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'main',
-          id,
-          name,
-        }),
-      });
+      const supabase = createClient();
+      const { error } = await supabase
+        .from('main_categories')
+        .update({ name })
+        .eq('id', id);
 
-      if (!response.ok) throw new Error('Failed to update main category');
+      if (error) throw error;
+
       await get().fetchCategories(); // Refresh categories
       set({ loading: false });
     } catch (error) {
@@ -128,19 +156,20 @@ export const useCategoryStore = create<CategoryStore>()((set, get) => ({
   updateSubCategory: async (mainCategoryId, subCategoryId, newName, displayType, backgroundImage) => {
     set({ loading: true, error: null });
     try {
-      const response = await fetch('/api/categories', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'sub',
-          id: subCategoryId,
-          name: newName,
-          ...(displayType !== undefined && { displayType }),
-          ...(backgroundImage !== undefined && { backgroundImage }),
-        }),
-      });
+      const supabase = createClient();
 
-      if (!response.ok) throw new Error('Failed to update subcategory');
+      // Build update object with snake_case field names
+      const updates: any = { name: newName };
+      if (displayType !== undefined) updates.display_type = displayType;
+      if (backgroundImage !== undefined) updates.background_image = backgroundImage;
+
+      const { error } = await supabase
+        .from('sub_categories')
+        .update(updates)
+        .eq('id', subCategoryId);
+
+      if (error) throw error;
+
       await get().fetchCategories(); // Refresh categories
       set({ loading: false });
     } catch (error) {
@@ -151,11 +180,14 @@ export const useCategoryStore = create<CategoryStore>()((set, get) => ({
   deleteMainCategory: async (id) => {
     set({ loading: true, error: null });
     try {
-      const response = await fetch(`/api/categories?type=main&id=${id}`, {
-        method: 'DELETE',
-      });
+      const supabase = createClient();
+      const { error } = await supabase
+        .from('main_categories')
+        .delete()
+        .eq('id', id);
 
-      if (!response.ok) throw new Error('Failed to delete main category');
+      if (error) throw error;
+
       set((state) => ({
         mainCategories: state.mainCategories.filter((category) => category.id !== id),
         loading: false,
@@ -168,11 +200,14 @@ export const useCategoryStore = create<CategoryStore>()((set, get) => ({
   deleteSubCategory: async (mainCategoryId, subCategoryId) => {
     set({ loading: true, error: null });
     try {
-      const response = await fetch(`/api/categories?type=sub&id=${subCategoryId}`, {
-        method: 'DELETE',
-      });
+      const supabase = createClient();
+      const { error } = await supabase
+        .from('sub_categories')
+        .delete()
+        .eq('id', subCategoryId);
 
-      if (!response.ok) throw new Error('Failed to delete subcategory');
+      if (error) throw error;
+
       await get().fetchCategories(); // Refresh categories
       set({ loading: false });
     } catch (error) {
@@ -189,18 +224,15 @@ export const useCategoryStore = create<CategoryStore>()((set, get) => ({
         sortOrder: index,
       }));
 
+      const supabase = createClient();
+
       // Update each subcategory in the database
       await Promise.all(
         updatedSubCategories.map((sub) =>
-          fetch('/api/categories', {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              type: 'sub',
-              id: sub.id,
-              sortOrder: sub.sortOrder,
-            }),
-          })
+          supabase
+            .from('sub_categories')
+            .update({ sort_order: sub.sortOrder })
+            .eq('id', sub.id)
         )
       );
 
@@ -220,18 +252,15 @@ export const useCategoryStore = create<CategoryStore>()((set, get) => ({
         sortOrder: index,
       }));
 
+      const supabase = createClient();
+
       // Update each main category in the database
       await Promise.all(
         updatedMainCategories.map((mainCat) =>
-          fetch('/api/categories', {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              type: 'main',
-              id: mainCat.id,
-              sortOrder: mainCat.sortOrder,
-            }),
-          })
+          supabase
+            .from('main_categories')
+            .update({ sort_order: mainCat.sortOrder })
+            .eq('id', mainCat.id)
         )
       );
 
