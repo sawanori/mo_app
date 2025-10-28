@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja" suppressHydrationWarning>
-      <body className={`${inter.className} bg-background flex items-center justify-center min-h-screen`}>
+      <body className={`${inter.className} bg-background min-h-screen`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
@@ -27,7 +27,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AuthProvider>
-            <div className="w-full max-w-md portrait:max-w-sm landscape:max-w-4xl min-h-screen landscape:min-h-auto">
+            <div className="w-full min-h-screen">
               {children}
             </div>
             <Toaster />

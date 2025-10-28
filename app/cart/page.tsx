@@ -47,7 +47,7 @@ export default function CartPage() {
     return (
       <>
         <Navigation />
-        <div className="container mx-auto px-4 py-8">
+        <div className="w-full px-3 py-8">
           <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4">
             <ShoppingBag className="h-16 w-16 text-muted-foreground" />
             <h2 className="text-2xl font-bold">カートは空です</h2>
@@ -68,8 +68,8 @@ export default function CartPage() {
   return (
     <>
       <Navigation />
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
+      <div className="w-full px-3 py-8">
+        <div className="w-full">
           <h1 className="text-3xl font-bold mb-8">ショッピングカート</h1>
           <div className="grid gap-8 md:grid-cols-[2fr_1fr]">
             <div className="space-y-4">

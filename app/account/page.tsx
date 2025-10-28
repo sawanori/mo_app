@@ -32,8 +32,8 @@ const orderHistory = [
 
 export default function AccountPage() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto space-y-8">
+    <div className="w-full px-3 py-8">
+      <div className="w-full space-y-8">
         <Card className="p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold">アカウント情報</h2>

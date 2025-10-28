@@ -35,7 +35,7 @@ export default function PaymentPage() {
       <>
         <Navigation />
         <div className="min-h-[calc(100vh-4rem)] bg-gray-50">
-          <div className="container max-w-md mx-auto px-4 py-6 space-y-4">
+          <div className="w-full px-3 py-6 space-y-4">
             <Card className="p-6 text-center">
               <div className="flex justify-center mb-6">
                 <Bell className="h-16 w-16 text-primary animate-bounce" />
@@ -111,7 +111,7 @@ export default function PaymentPage() {
     <>
       <Navigation />
       <div className="min-h-[calc(100vh-4rem)] bg-gray-50">
-        <div className="container max-w-md mx-auto px-4 py-6 space-y-4">
+        <div className="w-full px-3 py-6 space-y-4">
           <div className="flex flex-col space-y-4 sm:flex-row sm:justify-between sm:items-center">
             <h1 className="text-2xl font-bold">会計</h1>
             <Link href="/order-history">

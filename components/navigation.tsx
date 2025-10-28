@@ -41,54 +41,50 @@ export default function Navigation() {
 
   return (
     <nav
-      className={`sticky top-0 z-50 transition-transform duration-300 flex justify-center ${
+      className={`sticky top-0 z-50 transition-transform duration-300 w-full ${
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
+      style={{ backgroundColor: colorScheme.headerBg }}
     >
-      <div
-        className="w-full max-w-md portrait:max-w-sm landscape:max-w-4xl px-4"
-        style={{ backgroundColor: colorScheme.headerBg }}
-      >
-        <div className="flex flex-col items-center py-2 border-b">
-          <div className="flex items-center space-x-2">
-            <NavButton
-              icon={History}
-              label="履歴"
-              href="/order-history"
-              color={colorScheme.headerIcon}
-              textColor={colorScheme.navigationText}
-              testId="nav-history"
-            />
-            <NavButton
-              icon={Bell}
-              label="呼出"
-              color={colorScheme.headerIcon}
-              textColor={colorScheme.navigationText}
-              testId="nav-call"
-            />
-            <NavButton
-              icon={Receipt}
-              label="会計"
-              href="/payment"
-              color={colorScheme.headerIcon}
-              textColor={colorScheme.navigationText}
-              testId="nav-payment"
-            />
-            <NavButton
-              icon={Languages}
-              label="Lang"
-              color={colorScheme.headerIcon}
-              textColor={colorScheme.navigationText}
-              testId="nav-language"
-            />
-            <NavButton
-              icon={Search}
-              label="検索"
-              color={colorScheme.headerIcon}
-              textColor={colorScheme.navigationText}
-              testId="nav-search"
-            />
-          </div>
+      <div className="flex flex-col items-center py-2 border-b">
+        <div className="flex items-center space-x-2">
+          <NavButton
+            icon={History}
+            label="履歴"
+            href="/order-history"
+            color={colorScheme.headerIcon}
+            textColor={colorScheme.navigationText}
+            testId="nav-history"
+          />
+          <NavButton
+            icon={Bell}
+            label="呼出"
+            color={colorScheme.headerIcon}
+            textColor={colorScheme.navigationText}
+            testId="nav-call"
+          />
+          <NavButton
+            icon={Receipt}
+            label="会計"
+            href="/payment"
+            color={colorScheme.headerIcon}
+            textColor={colorScheme.navigationText}
+            testId="nav-payment"
+          />
+          <NavButton
+            icon={Languages}
+            label="Lang"
+            color={colorScheme.headerIcon}
+            textColor={colorScheme.navigationText}
+            testId="nav-language"
+          />
+          <NavButton
+            icon={Search}
+            label="検索"
+            color={colorScheme.headerIcon}
+            textColor={colorScheme.navigationText}
+            testId="nav-search"
+          />
         </div>
       </div>
     </nav>

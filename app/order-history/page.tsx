@@ -24,7 +24,7 @@ export default function OrderHistoryPage() {
     return (
       <>
         <Navigation />
-        <div className="container mx-auto px-4 py-8">
+        <div className="w-full px-3 py-8">
           <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4">
             <ClipboardList className="h-16 w-16 text-muted-foreground" />
             <h2 className="text-2xl font-bold">注文履歴がありません</h2>
@@ -41,8 +41,8 @@ export default function OrderHistoryPage() {
   return (
     <>
       <Navigation />
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
+      <div className="w-full px-3 py-8">
+        <div className="w-full">
           <h1 className="text-3xl font-bold mb-8">注文履歴</h1>
           <div className="space-y-6">
             {orders.map((order) => (
