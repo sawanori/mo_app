@@ -2,43 +2,42 @@
 
 ## Project Structure & Module Organization
 - `app/`: Next.js App Router (pages, layouts, `app/api/*` routes).
-- `components/`: UI components; primitives in `components/ui/`.
-- `lib/`: shared utilities, state (`lib/store/`), Prisma client (`lib/prisma.ts`).
-- `hooks/`: reusable React hooks.
-- `prisma/`: Prisma schema and migrations.
-- `tests/`: Playwright specs; additional `*.spec.ts` files may live at repo root.
-- `scripts/`: one-off maintenance scripts (e.g., data migration).
+- `components/`: UI components; primitives in `components/ui/`; extracted views like `hero-card.tsx`, `menu-grid.tsx`, `nav-button.tsx`, `subcategory-header.tsx`.
+- `hooks/`: custom hooks (e.g., `use-sticky-sidebar`, `use-subcategory-scroll`).
+- `lib/`: shared utilities and Zustand stores (`lib/store/*`); Prisma client in `lib/prisma.ts`.
+- `prisma/`: `schema.prisma` and `migrations/`.
+- `tests/`: Playwright specs; some `*.spec.ts` sit at repo root; artifacts in `test-results/`.
+- `scripts/`: one-off scripts (e.g., `scripts/migrate-data.ts`).
 
 ## Build, Test, and Development Commands
-- `npm run dev`: start local dev server at `http://localhost:3000`.
-- `npm run build`: production build.
-- `npm run start`: start built app.
-- `npm run lint`: run ESLint (Next core web vitals).
-- `npx prisma generate`: generate Prisma client after schema changes.
-- `npx prisma migrate dev`: create/apply DB migrations to the local Postgres.
-- `npx tsx scripts/migrate-data.ts`: load sample data into the DB.
-- `npx playwright test`: run UI/integration tests (dev server must be running).
+- `npm run dev` — start dev server at `http://localhost:3000`.
+- `npm run build` — production build; `npm run start` — serve built app.
+- `npm run lint` — ESLint (Next core web vitals rules).
+- `npx prisma generate` — regenerate Prisma client after schema changes.
+- `npx prisma migrate dev` — create/apply local migrations.
+- `npx tsx scripts/migrate-data.ts` — seed sample data.
+- `npx playwright test` — run E2E tests (ensure dev server is running).
 
 ## Coding Style & Naming Conventions
-- Language: TypeScript (strict mode). Indentation: 2 spaces.
-- File names: kebab-case (e.g., `menu-section.tsx`).
-- Components: PascalCase names, React function components.
-- Variables/functions: camelCase. Enforce with `npm run lint` before PRs.
-- Paths: prefer alias `@/*` (configured in `tsconfig.json`).
+- TypeScript (strict); 2‑space indentation.
+- Filenames: kebab-case (e.g., `menu-section.tsx`). Components: PascalCase. Variables/functions: camelCase.
+- Use path alias `@/*` from `tsconfig.json` for imports.
+- Keep UI class names/structure stable; prefer extraction + memoization over rewrites.
 
 ## Testing Guidelines
-- Framework: Playwright (`@playwright/test`). Tests match `**/*.spec.ts`.
-- Start the app first: `npm run dev`, then run tests in a new terminal.
-- Artifacts: failing runs store traces/screenshots in `test-results/`.
-- Aim to cover critical user flows (no hard coverage threshold yet).
-- Example: `npx playwright test tests/video-menu-test.spec.ts`.
+- Framework: Playwright (`@playwright/test`); tests match `**/*.spec.ts` in `tests/` and repo root.
+- Start the app first (`npm run dev`), then run tests. Artifacts (traces/screenshots) are written to `test-results/`.
+- Prefer `data-testid` selectors (already added to key UI parts).
+- Example: `npx playwright test tests/theme-test.spec.ts`.
 
 ## Commit & Pull Request Guidelines
-- Prefer Conventional Commits (history has no strict convention yet):
-  - Example: `feat(app): add menu filtering` or `fix(api): correct status code`.
-- PRs should include: clear description, linked issues, test plan/steps, and screenshots for UI changes.
-- Keep diffs focused; update tests, types, and docs when behavior changes.
+- Prefer Conventional Commits, e.g.:
+  - `feat(app): add menu filtering`
+  - `fix(api): correct category update`
+- PRs include: clear description, linked issues, test plan/steps, and screenshots for UI changes. Keep diffs focused; update tests/types/docs when behavior changes.
 
 ## Security & Configuration Tips
-- Configure `.env` (e.g., `DATABASE_URL=postgresql://...`). Do not commit secrets.
-- After changing `prisma/schema.prisma`, run `npx prisma generate` and migrate.
+- Do not commit secrets; use `.env`/`.env*.local` only (see `.env.example`). Keep `DATABASE_URL` local.
+- After `prisma/schema.prisma` changes, run `npx prisma generate` and migrate.
+- Do not put secrets in `NEXT_PUBLIC_*` env vars.
+- Next/Image remote hosts are restricted in `next.config.js` (e.g., `images.unsplash.com`). Add domains as needed.
