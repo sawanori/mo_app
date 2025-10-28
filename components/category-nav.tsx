@@ -16,12 +16,13 @@ export const CategoryNav = memo(function CategoryNav({ categories, selectedCateg
 
   return (
     <div className="w-full rounded-md border p-1.5 overflow-hidden">
-      <div className="flex gap-1 justify-center overflow-x-auto scrollbar-hide">
+      <div className="flex gap-1 justify-start overflow-x-auto scrollbar-hide">
         <Button
           variant={selectedCategory === "すべて" ? "default" : "secondary"}
           className="flex-shrink-0 text-[10px] h-7 px-2 whitespace-nowrap"
           style={{
-            backgroundColor: selectedCategory === "すべて" ? colorScheme.mainCategoryButtonBg : undefined,
+            backgroundColor: selectedCategory === "すべて" ? "#fbbf24" : undefined,
+            color: selectedCategory === "すべて" ? "#000000" : undefined,
           }}
           onClick={() => onSelectCategory("すべて")}
           data-testid="maincat-all"
@@ -34,7 +35,8 @@ export const CategoryNav = memo(function CategoryNav({ categories, selectedCateg
             variant={selectedCategory === category ? "default" : "secondary"}
             className="flex-shrink-0 text-[10px] h-7 px-2 whitespace-nowrap"
             style={{
-              backgroundColor: selectedCategory === category ? colorScheme.mainCategoryButtonBg : undefined,
+              backgroundColor: selectedCategory === category ? "#fbbf24" : undefined,
+              color: selectedCategory === category ? "#000000" : undefined,
             }}
             onClick={() => onSelectCategory(category)}
             data-testid={`maincat-${category}`}
