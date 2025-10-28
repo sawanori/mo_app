@@ -65,7 +65,7 @@ const DialogContent = React.forwardRef<
             y: { type: 'spring', stiffness: 300, damping: 30 }
           }}
           className={cn(
-            'fixed inset-x-0 bottom-0 z-50 grid w-[85%] max-w-md mx-auto gap-4 border-t rounded-t-2xl bg-background p-6 shadow-lg',
+            'fixed inset-x-0 bottom-0 z-50 grid w-full gap-4 border-t rounded-t-2xl bg-background p-6 shadow-lg',
             className
           )}
         >

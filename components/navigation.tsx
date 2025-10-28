@@ -41,10 +41,11 @@ export default function Navigation() {
 
   return (
     <nav
-      className="sticky top-0 z-50 w-full overflow-hidden transition-transform duration-300 ease-in-out"
+      className="fixed top-0 left-0 right-0 z-50 w-full overflow-hidden transition-all duration-300 ease-in-out"
       style={{
         backgroundColor: colorScheme.headerBg,
-        transform: isVisible ? 'translateY(0)' : 'translateY(-100%)'
+        transform: isVisible ? 'translateY(0)' : 'translateY(-100%)',
+        opacity: isVisible ? 1 : 0
       }}
     >
       <div className="flex flex-col items-center py-2 border-b max-w-full">
