@@ -8,24 +8,36 @@ import { NavButton } from "./nav-button";
 
 export default function Navigation() {
   const [isVisible, setIsVisible] = useState(true);
+  const [scrolling, setScrolling] = useState(false);
   const currentTheme = useThemeStore((state) => state.currentTheme);
   const colorScheme = COLOR_THEMES[currentTheme];
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      // スクロール中は非表示
-      setIsVisible(false);
+      const currentScrollY = window.scrollY;
+
+      // スクロールが発生した
+      setScrolling(true);
+
+      // スクロール中は非表示（ただし、ページトップでは常に表示）
+      if (currentScrollY > 0) {
+        setIsVisible(false);
+      }
 
       // タイムアウトをクリア
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
 
-      // スクロールが止まったら500ms後に表示
+      // スクロールが止まったら300ms後に表示
       timeoutRef.current = setTimeout(() => {
+        setScrolling(false);
         setIsVisible(true);
-      }, 500);
+      }, 300);
+
+      lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -40,10 +52,10 @@ export default function Navigation() {
 
   return (
     <nav
-      className="sticky z-50 w-full transition-all duration-300 ease-in-out"
+      className="sticky top-0 z-50 w-full transition-transform duration-300 ease-in-out"
       style={{
         backgroundColor: colorScheme.headerBg,
-        top: isVisible ? '0' : '-72px'
+        transform: isVisible ? 'translateY(0)' : 'translateY(-100%)'
       }}
     >
       <div className="flex flex-col items-center py-2 border-b max-w-full">
