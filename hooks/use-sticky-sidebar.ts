@@ -8,8 +8,6 @@ export function useStickySidebar(sidebarTopRef: React.RefObject<HTMLDivElement>)
   const stickyStartPositionRef = useRef(0);
 
   useEffect(() => {
-    const HEADER_HEIGHT = 72; // ヘッダーの高さ
-
     const handleScroll = () => {
       if (!sidebarTopRef.current) return;
 
@@ -17,13 +15,13 @@ export function useStickySidebar(sidebarTopRef: React.RefObject<HTMLDivElement>)
       const currentScrollY = window.scrollY;
       const scrollingDown = currentScrollY > lastScrollYRef.current;
 
-      // ヘッダーの高さを考慮してスティッキーを開始
-      if (rect.top <= HEADER_HEIGHT && !isSticky) {
+      // サブカテゴリーがデバイスのTOPに到達したらスティッキーを開始
+      if (rect.top <= 0 && !isSticky) {
         setIsSticky(true);
         stickyStartPositionRef.current = currentScrollY;
       } else if (isSticky && scrollingDown && currentScrollY - stickyStartPositionRef.current > 300) {
         setIsSticky(false);
-      } else if (isSticky && !scrollingDown && rect.top > HEADER_HEIGHT) {
+      } else if (isSticky && !scrollingDown && rect.top > 0) {
         setIsSticky(false);
       }
 
