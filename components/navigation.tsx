@@ -8,39 +8,24 @@ import { NavButton } from "./nav-button";
 
 export default function Navigation() {
   const [isVisible, setIsVisible] = useState(true);
-  const [scrolling, setScrolling] = useState(false);
   const currentTheme = useThemeStore((state) => state.currentTheme);
   const colorScheme = COLOR_THEMES[currentTheme];
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      console.log('Scroll event fired, scrollY:', currentScrollY);
+      setIsVisible(false);
 
-      // スクロール中は非表示（ただし、ページトップでは常に表示）
-      if (currentScrollY > 0) {
-        console.log('Hiding header');
-        setIsVisible(false);
-      }
-
-      // タイムアウトをクリア
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
 
-      // スクロールが止まったら300ms後に表示
       timeoutRef.current = setTimeout(() => {
-        console.log('Showing header after timeout');
         setIsVisible(true);
       }, 300);
-
-      lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    console.log('Scroll listener attached');
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -52,10 +37,10 @@ export default function Navigation() {
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 w-full transition-transform duration-300 ease-in-out"
+      className="fixed left-0 right-0 z-50 w-full transition-all duration-300 ease-in-out"
       style={{
         backgroundColor: colorScheme.headerBg,
-        transform: isVisible ? 'translateY(0)' : 'translateY(-100%)'
+        top: isVisible ? '0px' : '-100px'
       }}
     >
       <div className="flex flex-col items-center py-2 border-b max-w-full">

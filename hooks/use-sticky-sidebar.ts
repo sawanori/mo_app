@@ -2,36 +2,35 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export function useStickySidebar(sidebarTopRef: React.RefObject<HTMLDivElement>) {
-  const [isSticky, setIsSticky] = useState(false);
-  const lastScrollYRef = useRef(0);
-  const stickyStartPositionRef = useRef(0);
+export function useStickySidebar(sidebarRef: React.RefObject<HTMLElement>) {
+  const [isFixed, setIsFixed] = useState(false);
+  const initialTopRef = useRef<number | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!sidebarTopRef.current) return;
+      if (!sidebarRef.current) return;
 
-      const rect = sidebarTopRef.current.getBoundingClientRect();
-      const currentScrollY = window.scrollY;
-      const scrollingDown = currentScrollY > lastScrollYRef.current;
-
-      // サブカテゴリーがデバイスのTOPに到達したらスティッキーを開始
-      if (rect.top <= 0 && !isSticky) {
-        setIsSticky(true);
-        stickyStartPositionRef.current = currentScrollY;
-      } else if (isSticky && scrollingDown && currentScrollY - stickyStartPositionRef.current > 300) {
-        setIsSticky(false);
-      } else if (isSticky && !scrollingDown && rect.top > 0) {
-        setIsSticky(false);
+      // Get initial position on first scroll
+      if (initialTopRef.current === null) {
+        const rect = sidebarRef.current.getBoundingClientRect();
+        initialTopRef.current = rect.top + window.scrollY;
       }
 
-      lastScrollYRef.current = currentScrollY;
+      const scrollY = window.scrollY;
+      const shouldBeFixed = scrollY >= initialTopRef.current;
+
+      if (shouldBeFixed !== isFixed) {
+        setIsFixed(shouldBeFixed);
+      }
     };
+
+    // Call once to set initial state
+    handleScroll();
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isSticky, sidebarTopRef]);
+  }, [isFixed, sidebarRef]);
 
-  return { isSticky } as const;
+  return { isFixed } as const;
 }
 
