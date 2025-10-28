@@ -33,7 +33,7 @@ export default function Home() {
   return (
     <div className="flex flex-col pb-20" style={{ backgroundColor: colorScheme.background, color: colorScheme.mainText }}>
       <Navigation />
-      <div className="flex flex-col py-4 space-y-3">
+      <div className="flex flex-col py-4 space-y-3 pt-[72px]">
         {/* Main Category Navigation */}
         <CategoryNav
           categories={mainCategories.map(cat => cat.name)}

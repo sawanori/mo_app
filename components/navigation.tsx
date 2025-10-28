@@ -17,12 +17,11 @@ export default function Navigation() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-
-      // スクロールが発生した
-      setScrolling(true);
+      console.log('Scroll event fired, scrollY:', currentScrollY);
 
       // スクロール中は非表示（ただし、ページトップでは常に表示）
       if (currentScrollY > 0) {
+        console.log('Hiding header');
         setIsVisible(false);
       }
 
@@ -33,7 +32,7 @@ export default function Navigation() {
 
       // スクロールが止まったら300ms後に表示
       timeoutRef.current = setTimeout(() => {
-        setScrolling(false);
+        console.log('Showing header after timeout');
         setIsVisible(true);
       }, 300);
 
@@ -41,6 +40,7 @@ export default function Navigation() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
+    console.log('Scroll listener attached');
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -52,7 +52,7 @@ export default function Navigation() {
 
   return (
     <nav
-      className="sticky top-0 z-50 w-full transition-transform duration-300 ease-in-out"
+      className="fixed top-0 left-0 right-0 z-50 w-full transition-transform duration-300 ease-in-out"
       style={{
         backgroundColor: colorScheme.headerBg,
         transform: isVisible ? 'translateY(0)' : 'translateY(-100%)'
