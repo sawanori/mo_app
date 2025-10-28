@@ -40,35 +40,33 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className={`fixed bottom-0 left-0 right-0 z-40 flex justify-center transition-transform duration-300 ${
-      isVisible ? "translate-y-0" : "translate-y-full"
-    }`}>
-      <div
-        className="w-full max-w-md portrait:max-w-sm landscape:max-w-4xl px-4"
-        style={{ backgroundColor: colorScheme.footerBg }}
-      >
-        <div className="flex flex-col items-center py-2 border-t">
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 h-auto py-2 px-3">
+    <footer
+      className={`fixed bottom-0 left-0 right-0 z-40 w-full overflow-hidden transition-transform duration-300 ${
+        isVisible ? "translate-y-0" : "translate-y-full"
+      }`}
+      style={{ backgroundColor: colorScheme.footerBg }}
+    >
+      <div className="flex flex-col items-center py-2 border-t max-w-full">
+          <div className="flex items-center justify-between gap-2 w-full px-2 max-w-full">
+            <Button variant="ghost" size="sm" className="flex flex-col items-center gap-0.5 h-auto py-2 px-2 flex-1 min-w-0">
               <Ticket className="h-6 w-6" style={{ color: colorScheme.headerIcon }} />
               <span className="text-[10px] font-medium" style={{ color: colorScheme.navigationText }}>クーポン</span>
             </Button>
-            <Link href="/">
-              <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 h-auto py-2 px-3 relative">
+            <Link href="/" className="flex-1 min-w-0">
+              <Button variant="ghost" size="sm" className="flex flex-col items-center gap-0.5 h-auto py-2 px-2 relative w-full">
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-14 h-14 rounded-full bg-orange-500/20 border-2 border-orange-500" />
+                  <div className="w-12 h-12 rounded-full bg-orange-500/20 border-2 border-orange-500" />
                 </div>
-                <UtensilsCrossed className="h-6 w-6 relative z-10" style={{ color: colorScheme.headerIcon }} />
-                <span className="text-[10px] font-medium relative z-10" style={{ color: colorScheme.navigationText }}>メニュー</span>
+                <UtensilsCrossed className="h-6 w-6 relative z-10 flex-shrink-0" style={{ color: colorScheme.headerIcon }} />
+                <span className="text-[10px] font-medium relative z-10 whitespace-nowrap" style={{ color: colorScheme.navigationText }}>メニュー</span>
               </Button>
             </Link>
-            <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 h-auto py-2 px-3">
+            <Button variant="ghost" size="sm" className="flex flex-col items-center gap-0.5 h-auto py-2 px-2 flex-1 min-w-0">
               <Award className="h-6 w-6" style={{ color: colorScheme.headerIcon }} />
               <span className="text-[10px] font-medium" style={{ color: colorScheme.navigationText }}>スタンプラリー</span>
             </Button>
           </div>
         </div>
-      </div>
     </footer>
   );
 }

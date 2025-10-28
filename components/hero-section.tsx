@@ -100,7 +100,7 @@ export function HeroSection() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative w-full overflow-hidden">
       <Carousel
         opts={{
           align: "center",
@@ -109,11 +109,11 @@ export function HeroSection() {
         className="w-full"
         setApi={setApi}
       >
-        <CarouselContent className="-ml-2 md:-ml-4">
+        <CarouselContent className="-ml-1">
           {items.map((item) => (
             <CarouselItem
               key={item.id}
-              className="pl-2 md:pl-4 basis-[85%] md:basis-[80%]"
+              className="pl-1 basis-[90%]"
               data-testid={`hero-slide-${item.id}`}
             >
               <HeroCard item={item} />

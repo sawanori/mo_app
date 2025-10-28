@@ -41,13 +41,13 @@ export default function Navigation() {
 
   return (
     <nav
-      className={`sticky top-0 z-50 transition-transform duration-300 w-full ${
+      className={`sticky top-0 z-50 transition-transform duration-300 w-full overflow-hidden ${
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
       style={{ backgroundColor: colorScheme.headerBg }}
     >
-      <div className="flex flex-col items-center py-2 border-b">
-        <div className="flex items-center space-x-2">
+      <div className="flex flex-col items-center py-2 border-b max-w-full">
+        <div className="flex items-center justify-between gap-1 w-full px-2 max-w-full">
           <NavButton
             icon={History}
             label="履歴"

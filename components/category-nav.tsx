@@ -15,11 +15,11 @@ export const CategoryNav = memo(function CategoryNav({ categories, selectedCateg
   const colorScheme = COLOR_THEMES[currentTheme];
 
   return (
-    <div className="w-full rounded-md border p-1.5">
-      <div className="flex gap-1 justify-center">
+    <div className="w-full rounded-md border p-1.5 overflow-hidden">
+      <div className="flex gap-1 justify-center overflow-x-auto scrollbar-hide">
         <Button
           variant={selectedCategory === "すべて" ? "default" : "secondary"}
-          className="flex-shrink-0 text-[10px] h-7 px-2"
+          className="flex-shrink-0 text-[10px] h-7 px-2 whitespace-nowrap"
           style={{
             backgroundColor: selectedCategory === "すべて" ? colorScheme.mainCategoryButtonBg : undefined,
           }}
@@ -32,7 +32,7 @@ export const CategoryNav = memo(function CategoryNav({ categories, selectedCateg
           <Button
             key={category}
             variant={selectedCategory === category ? "default" : "secondary"}
-            className="flex-shrink-0 text-[10px] h-7 px-2"
+            className="flex-shrink-0 text-[10px] h-7 px-2 whitespace-nowrap"
             style={{
               backgroundColor: selectedCategory === category ? colorScheme.mainCategoryButtonBg : undefined,
             }}
