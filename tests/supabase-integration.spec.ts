@@ -8,7 +8,7 @@ test.describe('Supabase Integration Tests', () => {
 
   test.describe('Homepage and Menu Loading', () => {
     test('should load the homepage successfully', async ({ page }) => {
-      await expect(page).toHaveTitle(/ダイニーダサチェックくん/);
+      await expect(page).toHaveTitle(/ダイニーUIチェックずら/);
     });
 
     test('should load menu items from Supabase', async ({ page }) => {
