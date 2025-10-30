@@ -1,0 +1,17 @@
+main_category,sub_category,item_name,description,price,image,sort_order,is_available,allergens,dietary_tags,card_size,media_type
+季節限定,春のおすすめ,筍の炊き込みご飯,春の香りを閉じ込めた優しい味わい,900,https://images.unsplash.com/photo-1604908814137-3a4c02b595a1,0,1,大豆,季節,normal,image
+季節限定,夏のおすすめ,冷やしトマトそうめん,さっぱり爽やかな夏の麺,800,https://images.unsplash.com/photo-1512058564366-18510be2db19,0,TRUE,,"夏,さっぱり",normal,image
+ベジタリアン,豆腐料理,豆腐ステーキきのこソース,香ばしい豆腐に濃厚きのこソース,950,https://images.unsplash.com/photo-1505575972945-28021aa5003d,0,1,大豆,ベジタリアン,large,image
+ベジタリアン,野菜カレー,彩り野菜カレー,野菜たっぷりのスパイスカレー,980,https://images.unsplash.com/photo-1543352634-873f17a7a088,1,1,,"ヘルシー,辛口",normal,image
+アジアン,麺料理,鶏肉のフォー,さっぱり出汁の米麺スープ,880,https://images.unsplash.com/photo-1526318472351-c75fcf070305,0,true,,米麺,normal,image
+アジアン,サンドイッチ,バインミー・レモングラスチキン,香り高いチキンと野菜のサンド,820,https://images.unsplash.com/photo-1550317138-10000687a72b,1,1,小麦,ベトナム,normal,image
+キッズ,プレート,お子様オムライス,ケチャップライスにふわとろ卵,650,https://images.unsplash.com/photo-1551218808-94e220e084d2,0,1,"卵,乳",キッズ,normal,image
+キッズ,スイーツ,いちごプリン,やさしい甘さの手作りプリン,350,https://images.unsplash.com/photo-1511918984145-48de785d4c4f,1,1,乳,スイーツ,,image
+モーニング,パン,ふわとろパンケーキ,メープルたっぷりの朝食パンケーキ,700,https://images.unsplash.com/photo-1495214783159-3503fd1b572d,0,1,"卵,乳,小麦",朝食,large,image
+モーニング,ドリンク,自家製レモネード,爽やかな酸味の自家製ドリンク,400,https://images.unsplash.com/photo-1527169402691-feff5539e52c,1,1,,"朝食,ドリンク",,image
+季節限定,夏のおすすめ,スイカスムージー,夏にぴったりのフルーティーな一杯,500,https://images.unsplash.com/photo-1536510347005-43d07f1af0b2,2,1,,"夏,ドリンク",,image
+アジアン,麺料理,魚介のラクサ,ココナッツが香るピリ辛スープ麺,980,https://images.unsplash.com/photo-1604908554007-415ad2d063b3,1,0,えび,シンガポール,normal,image
+ベジタリアン,野菜カレー,焼きナスとひよこ豆のカレー,香ばしいナスと豆のコク,1000,https://images.unsplash.com/photo-1514517220031-65b2d4097c3b,2,false,,ベジタリアン,,image
+季節限定,春のおすすめ,桜エビのペペロンチーノ,春香る桜エビのパスタ,1100,https://images.unsplash.com/photo-1504674900247-0877df9cc836,1,1,"えび,小麦","春,パスタ",large,image
+アジアン,サンドイッチ,グリルポークのバインミー,甘酸っぱいなますと香草がアクセント,860,https://images.unsplash.com/photo-1512058564366-18510be2db19,2,1,小麦,ベトナム,,image
+映像メニュー,プロモ,キッチンツアー動画,店内紹介のプロモ映像,0,https://videos.pexels.com/video-files/855700/855700-hd_1280_720_25fps.mp4,0,1,,プロモーション,normal,video

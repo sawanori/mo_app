@@ -1,0 +1,6 @@
+main_category,sub_category,item_name,description,price,image,sort_order,is_available,allergens,dietary_tags,card_size,media_type
+メイン料理,肉料理,ハンバーグステーキ,ジューシーな牛肉100%のハンバーグ,1200,https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf,1,1,"卵,乳","人気,おすすめ",normal,image
+メイン料理,肉料理,グリルチキン,特製ソースのグリルチキン,980,https://images.unsplash.com/photo-1598103442097-8b74394b95c6,2,1,,"ヘルシー,人気",normal,image
+メイン料理,魚料理,サーモンステーキ,ノルウェー産サーモン,1500,https://images.unsplash.com/photo-1580959375944-d33396f9e0a2,1,1,"魚","ヘルシー",normal,image
+サイド,サラダ,シーザーサラダ,新鮮野菜とクルトン,600,https://images.unsplash.com/photo-1546069901-ba9599a7e63c,1,1,"卵,乳","ヘルシー,ベジタリアン",normal,image
+ドリンク,ビール,生ビール,キンキンに冷えた生ビール,500,https://images.unsplash.com/photo-1535958636474-b021ee887b13,1,1,,"アルコール",normal,image

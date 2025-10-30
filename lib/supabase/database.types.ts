@@ -91,12 +91,15 @@ export type Database = {
       }
       menu_items: {
         Row: {
+          allergens: Json | null
           card_size: string | null
           category: string
           created_at: string | null
           description: string
+          dietary_tags: Json | null
           id: number
           image: string
+          is_available: boolean | null
           media_type: string | null
           name: string
           price: number
@@ -106,12 +109,15 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          allergens?: Json | null
           card_size?: string | null
           category: string
           created_at?: string | null
           description: string
+          dietary_tags?: Json | null
           id?: number
           image: string
+          is_available?: boolean | null
           media_type?: string | null
           name: string
           price: number
@@ -121,12 +127,15 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          allergens?: Json | null
           card_size?: string | null
           category?: string
           created_at?: string | null
           description?: string
+          dietary_tags?: Json | null
           id?: number
           image?: string
+          is_available?: boolean | null
           media_type?: string | null
           name?: string
           price?: number
@@ -250,6 +259,27 @@ export type Database = {
           id?: string
           role?: string
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      settings: {
+        Row: {
+          created_at: string
+          key: string
+          updated_at: string
+          value: string
+        }
+        Insert: {
+          created_at?: string
+          key: string
+          updated_at?: string
+          value: string
+        }
+        Update: {
+          created_at?: string
+          key?: string
+          updated_at?: string
+          value?: string
         }
         Relationships: []
       }
