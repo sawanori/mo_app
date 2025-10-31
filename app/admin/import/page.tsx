@@ -1,9 +1,14 @@
 'use client';
 
-import { CSVImport } from '@/components/csv-import';
+import dynamic from 'next/dynamic';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+
+const CSVImport = dynamic(() => import('@/components/csv-import').then(mod => ({ default: mod.CSVImport })), {
+  ssr: false,
+  loading: () => <div className="p-8 text-center">読み込み中...</div>
+});
 
 export default function ImportPage() {
   return (
