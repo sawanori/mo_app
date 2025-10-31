@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Papa from 'papaparse';
-import { createClient } from '@/lib/supabase/client';
+import { createClient } from '@supabase/supabase-js';
 
 type CSVRow = {
   main_category: string;
@@ -72,7 +72,10 @@ function validateRow(row: CSVRow, rowIndex: number): string | null {
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createClient();
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
 
     // Check authentication (admin only)
     const { data: { user }, error: authError } = await supabase.auth.getUser();
