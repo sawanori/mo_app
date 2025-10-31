@@ -26,26 +26,28 @@ export const MenuItemCard = memo(function MenuItemCard({ item, isFirst, isOrdere
       data-subcategory={item.subCategory}
     >
       <div className="flex flex-col">
-        <div className="relative w-full aspect-square">
-          {item.mediaType === "video" ? (
-            <video
-              src={item.image}
-              className="absolute inset-0 w-full h-full object-cover"
-              autoPlay
-              loop
-              muted
-              playsInline
-            />)
-            : (
-            <Image
-              src={item.image}
-              alt={item.name}
-              fill
-              className="object-cover"
-              sizes={isFirst ? "100vw" : "(max-width: 768px) 50vw, 33vw"}
-            />
-          )}
-        </div>
+        {item.image && item.image.trim() !== "" && (
+          <div className="relative w-full aspect-square">
+            {item.mediaType === "video" ? (
+              <video
+                src={item.image}
+                className="absolute inset-0 w-full h-full object-cover"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />)
+              : (
+              <Image
+                src={item.image}
+                alt={item.name}
+                fill
+                className="object-cover"
+                sizes={isFirst ? "100vw" : "(max-width: 768px) 50vw, 33vw"}
+              />
+            )}
+          </div>
+        )}
         <div className={`${isFirst ? "p-3" : "p-2"} space-y-1`}>
           <h3 className={`font-semibold ${isFirst ? "text-sm" : "text-xs"} line-clamp-2`}>
             {item.name}

@@ -62,26 +62,28 @@ export function ProductModal({ item, isOpen, onClose }: ProductModalProps) {
             data-testid="product-modal"
             data-item-id={item.id}
           >
-            <div className="relative aspect-[3/4] w-full overflow-hidden">
-              {item.mediaType === 'video' ? (
-                <video
-                  src={item.image}
-                  className="absolute inset-0 w-full h-full object-cover"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                />
-              ) : (
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 600px"
-                />
-              )}
-            </div>
+            {item.image && item.image.trim() !== "" && (
+              <div className="relative aspect-[3/4] w-full overflow-hidden">
+                {item.mediaType === 'video' ? (
+                  <video
+                    src={item.image}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                  />
+                ) : (
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 600px"
+                  />
+                )}
+              </div>
+            )}
 
             <div className="p-4 space-y-4">
               <DialogHeader className="space-y-2 text-left">
