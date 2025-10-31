@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Papa from 'papaparse';
-import { createClient } from '@supabase/supabase-js';
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 
 type CSVRow = {
   main_category: string;
@@ -72,15 +73,30 @@ function validateRow(row: CSVRow, rowIndex: number): string | null {
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createClient(
+    const cookieStore = cookies();
+
+    const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          get(name: string) {
+            return cookieStore.get(name)?.value;
+          },
+          set(name: string, value: string, options: any) {
+            cookieStore.set({ name, value, ...options });
+          },
+          remove(name: string, options: any) {
+            cookieStore.set({ name, value: '', ...options });
+          },
+        },
+      }
     );
 
     // Check authentication (admin only)
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: `Unauthorized - ${authError?.message || 'Not authenticated'}` }, { status: 401 });
     }
 
     // Check if user is admin
